@@ -2,18 +2,14 @@ package service.impl;
 
 import domain.Car;
 import domain.Search;
+import domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.CarRepository;
-import server.Server;
 import server.ServerThreads;
 import service.CarService;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,12 +27,17 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public void search(Search search) {
+        System.out.println("SEARCH!!!!");
         cars = carRepository.search(cars,search);
-    }
-
-    @Override
-    public void searchBrandAndModel(Search search) {
-        cars = carRepository.searchBrandAndModel(cars,search.getBrandAndModel());
+//        try {
+//            for (Car car:
+//                    cars) {
+//                ServerThreads.objectOutputStream.writeObject(car);
+//            }
+//            ServerThreads.objectOutputStream.writeObject(null);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -60,7 +61,12 @@ public class CarServiceImpl implements CarService {
             }
             ServerThreads.objectOutputStream.writeObject(null);
         } catch (IOException e) {
-                e.printStackTrace();
+            e.printStackTrace();
         }
+    }
+
+    @Override
+    public void isAvailable(Date from, Date to, List<Car> cars) {
+        cars = carRepository.isAvailable(from,to,cars);
     }
 }

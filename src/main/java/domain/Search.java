@@ -1,84 +1,76 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Search implements Serializable {
 
-    private String[][] brandAndModel;
-    private int[] year;
-    private String transmission;
-    private String[] type;
-    private int[] price;
-    private String fuel;
-    private int[] seats;
+    private String brand;
+    private String type;
+    private Date dateFrom;
+    private Date dateTo;
+    private int minPrice;
+    private int maxPrice;
     public static final long serialVersionUID =3L;
 
-    public Search(String[][] brandAndModel, int[] year, String transmission, String[] type, int[] price, String fuel, int[] seats) {
-        this.brandAndModel = brandAndModel;
-        this.year = year;
-        this.transmission = transmission;
+    public Search(String brand, String type, Date dateFrom, Date dateTo, int minPrice, int maxPrice) {
+        this.brand = brand;
         this.type = type;
-        this.price = price;
-        this.fuel = fuel;
-        this.seats = seats;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+        this.minPrice = minPrice;
+        this.maxPrice = maxPrice;
     }
 
-    public Search() {
+    public String getBrand() {
+        return brand;
     }
 
-    public String[][] getBrandAndModel() {
-        return brandAndModel;
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
-    public void setBrandAndModel(String[][] brandAndModel) {
-        this.brandAndModel = brandAndModel;
-    }
-
-    public int[] getYear() {
-        return year;
-    }
-
-    public void setYear(int[] year) {
-        this.year = year;
-    }
-
-    public String getTransmission() {
-        return transmission;
-    }
-
-    public void setTransmission(String transmission) {
-        this.transmission = transmission;
-    }
-
-    public String[] getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(String[] type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public int[] getPrice() {
-        return price;
+    public Date getDateFrom() {
+        return dateFrom;
     }
 
-    public void setPrice(int[] price) {
-        this.price = price;
+    public void setDateFrom(Date dateFrom) {
+        this.dateFrom = dateFrom;
     }
 
-    public String getFuel() {
-        return fuel;
+    public Date getDateTo() {
+        return dateTo;
     }
 
-    public void setFuel(String fuel) {
-        this.fuel = fuel;
+    public void setDateTo(Date dateTo) {
+        this.dateTo = dateTo;
     }
 
-    public int[] getSeats() {
-        return seats;
+    public int getMinPrice() {
+        return minPrice;
     }
 
-    public void setSeats(int[] seats) {
-        this.seats = seats;
+    public void setMinPrice(int minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    public int getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(int maxPrice) {
+        this.maxPrice = maxPrice;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 }

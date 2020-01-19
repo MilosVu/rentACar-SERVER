@@ -11,6 +11,7 @@ import repository.CarRepository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -27,123 +28,17 @@ public class CarRepositoryImpl implements CarRepository {
 
         for(int i = 0; i < cars.size(); i++){
             Car car = cars.get(i);
-            if(!checkYear(car,search.getYear())){
+            if(search.getBrand() != null && !(search.getBrand().equals(car.getBrand())))
                 cars.remove(i);
-                break;
-            }
-            if(!checkPrice(car,search.getPrice())){
+
+            if(search.getType() != null && !(search.getType().equals(car.getType())))
                 cars.remove(i);
-                break;
-            }
-            if(!checkFuel(car,search.getFuel())){
-                cars.remove(i);
-                break;
-            }
-            if(!checkSeats(car,search.getSeats())){
-                cars.remove(i);
-                break;
-            }
-            if(!checkTransmission(car,search.getTransmission())){
-                cars.remove(i);
-                break;
-            }
-            if(!checkType(car,search.getType())){
-                cars.remove(i);
-                break;
-            }
-        }
 
-        return cars;
-    }
-
-    private boolean check(Car car, String[] brandAndModel){
-        if(car.getBrand().equals(brandAndModel[0])){
-            if(brandAndModel[1] != null) {
-                if (car.getModel().equals(brandAndModel[1]))
-                    return true;
-                else
-                    return false;
-            }
-            else
-                return true;
-
-        }
-        return false;
-    }
-
-    private boolean checkYear(Car car,int[] year){
-        if(year != null){
-            if((year[0] == -1 || car.getYear() > year[0]) &&
-                    (year[1] == -1 || car.getYear() < year[1]))
-                return true;
-            else
-                return false;
-        }
-        return true;
-    }
-
-    private boolean checkTransmission(Car car, String transmission){
-        if(transmission != null){
-            return car.getTransmission().equals(transmission);
-        }
-        return true;
-    }
-
-    private boolean checkType(Car car,String[] type){
-        if(type != null){
-            for(String s: type){
-                if(car.getType().equals(s))
-                    return true;
-            }
-            return false;
-        }
-        return true;
-    }
-
-    private boolean checkPrice(Car car,int[] price){
-        if(price != null){
-            if((price[0] == -1 || car.getPrice() > price[0]) &&
-                    (price[1] == -1 || car.getPrice() < price[1]))
-                return true;
-            else
-                return false;
-        }
-        return true;
-    }
-
-    private boolean checkFuel(Car car,String fuel){
-        if(fuel != null){
-            return car.getFuel().equals(fuel);
-        }
-        return true;
-    }
-
-    private boolean checkSeats(Car car,int[] seats){
-        if(seats != null){
-            if((seats[0] == -1 || car.getSeats() > seats[0]) &&
-                    (seats[1] == -1 || car.getSeats() < seats[1]))
-                return true;
-            else
-                return false;
-        }
-        return true;
-    }
-
-    @Override
-    public List<Car> searchBrandAndModel(List<Car> cars, String[][] brandAndModel) {
-        boolean in = false;
-        for (int i = 0; i < cars.size(); i++){
-            for (int j = 0; j < brandAndModel.length; j++) {
-                if (check(cars.get(i), brandAndModel[j])) {
-                    in = true;
-                }
-            }
-            if(in)
-                in = false;
-            else
+            if(search.getMinPrice() > car.getPrice() || search.getMaxPrice() < car.getPrice())
                 cars.remove(i);
         }
-        return cars;
+
+        return isAvailable(search.getDateFrom(),search.getDateTo(),cars);
     }
 
     @Override
@@ -163,6 +58,11 @@ public class CarRepositoryImpl implements CarRepository {
     public List<Car> advertisedCars() {
         return jdbcTemplate.query("SELECT * FROM car WHERE advrtisment = ?", new Object[]{1},
                 new CarMapper());
+    }
+
+    @Override
+    public List<Car> isAvailable(Date from, Date to, List<Car> cars) {
+        return null;
     }
 
     class CarMapper implements RowMapper<Car> {

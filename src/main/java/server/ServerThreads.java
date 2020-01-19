@@ -37,7 +37,7 @@ public class ServerThreads extends Thread{
     boolean log = false;
     User user = null;
     String response;
-    private Search search;
+//    Search search = null;
 
     public ServerThreads(Socket socketForCommunication) {
         this.socketForCommunication = socketForCommunication;
@@ -58,10 +58,10 @@ public class ServerThreads extends Thread{
             while(!log) {
                 User user = (User) objectInputStream.readObject();
                 System.out.println(user);
+
                 command = streamFromClient.readLine();
                 System.out.println(command);
                 if(command.equals("logIn")) {
-                    System.out.println("Log in ");
                      user = userService.logIn(user.getUsername(), user.getPassword());
                     if(user != null) {
                         streamToClient.println("You have signed in");
@@ -87,13 +87,18 @@ public class ServerThreads extends Thread{
 
             while(true) {
                 command = streamFromClient.readLine();
+                System.out.println("Command: " + command);
                 switch (command){
                     case "advertisedCars":
                         carService.advertisedCars();
                         break;
                     case "search":
-                        search = (Search) objectInputStream.readObject();
-                        carService.search(search);
+
+                        Search search = (Search) objectInputStream.readObject();
+                        System.out.println("more");
+                        System.out.println(search.getBrand() + "\n" + search.getType() + "\n" + search.getMaxPrice() + "\n"
+                                + search.getMaxPrice() + "\n" + search.getDateFrom() + "\n" + search.getDateTo());
+//                        carService.search(search);
                         break;
                     case "reserve":
                         reservationService.reserve((Reservation) objectInputStream.readObject());
