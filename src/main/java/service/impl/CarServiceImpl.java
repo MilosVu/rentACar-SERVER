@@ -57,7 +57,6 @@ public class CarServiceImpl implements CarService {
             for (Car car:
                  cars) {
                 ServerThreads.objectOutputStream.writeObject(car);
-                System.out.println(car.getImageURL());
             }
             ServerThreads.objectOutputStream.writeObject(null);
         } catch (IOException e) {
