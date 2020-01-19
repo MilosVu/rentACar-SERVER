@@ -1,6 +1,7 @@
 package server;
 
 import config.ApplicationConfiguration;
+import domain.Reservation;
 import domain.Search;
 import domain.User;
 import org.springframework.context.ApplicationContext;
@@ -17,8 +18,8 @@ public class ServerThreads extends Thread{
     ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
     UserService userService = context.getBean(UserService.class);
     Service service = context.getBean(Service.class);
-    CarService carService = context.getBean(CarService.class);
-    ReservationService reservationService = context.getBean(ReservationService.class);
+//    CarService carService = context.getBean(CarService.class);
+//    ReservationService reservationService = context.getBean(ReservationService.class);
 
     Socket socketForCommunication = null;
     public static InputStream inputStream = null;
@@ -52,7 +53,7 @@ public class ServerThreads extends Thread{
             objectInputStream = new ObjectInputStream(socketForCommunication.getInputStream());
             objectOutputStream = new ObjectOutputStream(socketForCommunication.getOutputStream());
 
-
+            System.out.println("napravio");
 
             while(!log) {
                 User user = (User) objectInputStream.readObject();
@@ -84,18 +85,24 @@ public class ServerThreads extends Thread{
                 }
             }
 
-            while(true) {
-                command = streamFromClient.readLine();
-                switch (command){
-                    case "advertisedCars":
-                        carService.advertisedCars();
-                        break;
-                    case "search":
-                        search = (Search) objectInputStream.readObject();
-                        carService.search(search);
-                        break;
-                }
-            }
+//            while(true) {
+//                command = streamFromClient.readLine();
+//                switch (command){
+//                    case "advertisedCars":
+//                        carService.advertisedCars();
+//                        break;
+//                    case "search":
+//                        search = (Search) objectInputStream.readObject();
+//                        carService.search(search);
+//                        break;
+//                    case "reserve":
+//                        reservationService.reserve((Reservation) objectInputStream.readObject());
+//                        break;
+//                        default:
+//                            System.out.println("ERROR");
+//                            break;
+//                }
+//            }
 
         } catch (Exception e) {
             System.out.println("User left");
