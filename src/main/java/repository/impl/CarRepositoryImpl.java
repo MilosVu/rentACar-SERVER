@@ -178,6 +178,7 @@ public class CarRepositoryImpl implements CarRepository {
             car.setPrice(rs.getInt("price"));
             car.setFuel(rs.getString("fuel"));
             car.setSeats(rs.getInt("seats"));
+            car.setImageURL(rs.getString("url"));
             return car;
         }
     }

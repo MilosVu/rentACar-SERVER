@@ -5,6 +5,7 @@ import domain.Search;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.CarRepository;
+import server.Server;
 import server.ServerThreads;
 import service.CarService;
 
@@ -21,9 +22,6 @@ public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
     private List<Car> cars;
-    private String path = "C:\\Users\\Milos\\Documents\\FAKULTET\\Peti semestar\\ELAB\\Rent a car\\";
-    private File file;
-    private ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
     @Autowired
     public CarServiceImpl(CarRepository carRepository){
@@ -55,19 +53,15 @@ public class CarServiceImpl implements CarService {
     @Override
     public void advertisedCars() {
         cars = carRepository.advertisedCars();
-        for (Car car: cars
-             ) {
-            file = new File(path + car.getCarID() + ".jpg");
-
-            try {
-
-                car.setImage(ImageIO.read(file));
-
+        try {
+            for (Car car:
+                 cars) {
                 ServerThreads.objectOutputStream.writeObject(car);
-            } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println(car.getImageURL());
             }
-
+            ServerThreads.objectOutputStream.writeObject(null);
+        } catch (IOException e) {
+                e.printStackTrace();
         }
     }
 }

@@ -15,10 +15,10 @@ public class Car implements Serializable {
     private int price;
     private String fuel;
     private int seats;
-    private Image Image;
+    private String imageURL;
     public static final long serialVersionUID =1L;
 
-    public Car(int carID, String brand, String model, int year, String transmission, String type, int price, String fuel, int seats, Image Image) {
+    public Car(int carID, String brand, String model, int year, String transmission, String type, int price, String fuel, int seats, String imageURL) {
         this.carID = carID;
         this.brand = brand;
         this.model = model;
@@ -28,7 +28,7 @@ public class Car implements Serializable {
         this.price = price;
         this.fuel = fuel;
         this.seats = seats;
-        this.Image = Image;
+        this.imageURL = imageURL;
     }
 
     public Car() {
@@ -106,12 +106,12 @@ public class Car implements Serializable {
         this.seats = seats;
     }
 
-    public Image getImage() {
-        return Image;
+    public String getImageURL() {
+        return imageURL;
     }
 
-    public void setImage(Image Image) {
-        this.Image = Image;
+    public void setImageURL(String image) {
+        this.imageURL = image;
     }
 
     @Override
