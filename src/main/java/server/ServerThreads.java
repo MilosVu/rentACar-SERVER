@@ -93,15 +93,14 @@ public class ServerThreads extends Thread{
                         carService.advertisedCars();
                         break;
                     case "search":
-
+                        streamToClient.println("OK");
                         Search search = (Search) objectInputStream.readObject();
-                        System.out.println("more");
-                        System.out.println(search.getBrand() + "\n" + search.getType() + "\n" + search.getMaxPrice() + "\n"
-                                + search.getMaxPrice() + "\n" + search.getDateFrom() + "\n" + search.getDateTo());
-//                        carService.search(search);
+                        carService.search(search);
                         break;
                     case "reserve":
+                        streamToClient.println("OK");
                         reservationService.reserve((Reservation) objectInputStream.readObject());
+                        streamToClient.println("Reserved!");
                         break;
                         default:
                             System.out.println("ERROR");

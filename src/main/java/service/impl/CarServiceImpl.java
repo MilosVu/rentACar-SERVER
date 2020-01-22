@@ -28,16 +28,18 @@ public class CarServiceImpl implements CarService {
     @Override
     public void search(Search search) {
         System.out.println("SEARCH!!!!");
+        load();
         cars = carRepository.search(cars,search);
-//        try {
-//            for (Car car:
-//                    cars) {
-//                ServerThreads.objectOutputStream.writeObject(car);
-//            }
-//            ServerThreads.objectOutputStream.writeObject(null);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        preview();
+        try {
+            for (Car car:
+                    cars) {
+                ServerThreads.objectOutputStream.writeObject(car);
+            }
+            ServerThreads.objectOutputStream.writeObject(null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -65,8 +67,4 @@ public class CarServiceImpl implements CarService {
         }
     }
 
-    @Override
-    public void isAvailable(Date from, Date to, List<Car> cars) {
-        cars = carRepository.isAvailable(from,to,cars);
-    }
 }

@@ -16,6 +16,4 @@ public interface CarService {
 
     void advertisedCars();
 
-    void isAvailable (Date from, Date to, List<Car> cars);
-
 }

@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Repository
@@ -25,21 +26,33 @@ public class CarRepositoryImpl implements CarRepository {
 
     @Override
     public List<Car> search(List<Car> cars, Search search) {
-
-        for(int i = 0; i < cars.size(); i++){
-            Car car = cars.get(i);
-            if(search.getBrand() != null && !(search.getBrand().equals(car.getBrand())))
-                cars.remove(i);
-
-            if(search.getType() != null && !(search.getType().equals(car.getType())))
-                cars.remove(i);
-
-            if(search.getMinPrice() > car.getPrice() || search.getMaxPrice() < car.getPrice())
-                cars.remove(i);
+        int size = cars.size();
+        int position = 0;
+        Car car;
+        for(int i = 0; i < size; i++){
+            car = cars.get(position);
+            System.out.println(car.getBrand() + "\n" + car.getModel() + "****");
+            if(search.getBrand() != null && !(search.getBrand().equals(car.getBrand()))) {
+                System.out.println(car.getBrand() + " should be removed");
+                cars.remove(position);
+                continue;
+            }
+            if(search.getType() != null && !(search.getType().equals(car.getType()))) {
+                System.out.println(car.getType() + " should be removed");
+                cars.remove(position);
+                continue;
+            }
+            if(search.getMinPrice() >= car.getPrice() || search.getMaxPrice() <= car.getPrice()) {
+                System.out.println(car.getPrice() + " should be removed");
+                cars.remove(position);
+                continue;
+            }
+            else
+                position++;
         }
-
-        return isAvailable(search.getDateFrom(),search.getDateTo(),cars);
-    }
+        return  cars;
+//        return isAvailable(search.getDateFrom(),search.getDateTo(),cars);
+}
 
     @Override
     public List<Car> load() {
@@ -61,8 +74,10 @@ public class CarRepositoryImpl implements CarRepository {
     }
 
     @Override
-    public List<Car> isAvailable(Date from, Date to, List<Car> cars) {
-        return null;
+    public boolean isAvailable(Date from, Date to, Car car) {
+        Integer cnt = jdbcTemplate.queryForObject(
+                "SELECT count(*) FROM reservation WHERE carID = ? AND pickUpDate between ? AND ?)", Integer.class);
+        return cnt != null && cnt > 0;
     }
 
     class CarMapper implements RowMapper<Car> {

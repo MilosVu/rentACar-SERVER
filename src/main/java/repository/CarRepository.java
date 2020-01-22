@@ -16,6 +16,6 @@ public interface CarRepository {
 
     List<Car> advertisedCars();
 
-    List<Car> isAvailable (Date from, Date to, List<Car> cars);
+    boolean isAvailable (Date from, Date to, Car car);
 
 }
